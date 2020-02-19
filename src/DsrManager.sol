@@ -21,14 +21,16 @@ contract VatLike {
 }
 
 contract PotLike {
-    function chi() external returns (uint256);
-    function rho() external returns (uint256);
+    function vat() external view returns (address);
+    function chi() external view returns (uint256);
+    function rho() external view returns (uint256);
     function drip() external returns (uint256);
     function join(uint256) external;
     function exit(uint256) external;
 }
 
 contract JoinLike {
+    function dai() external view returns (address);
     function join(address, uint256) external;
     function exit(address, uint256) external;
 }
@@ -39,10 +41,9 @@ contract GemLike {
 }
 
 contract DsrManager {
-    VatLike  public vat = VatLike(0x35D1b3F3D7966A1DFe207aa4514C12a259A0492B);
-    PotLike  public pot = PotLike(0x197E90f9FAD81970bA7976f33CbD77088E5D7cf7);
-    GemLike  public dai = GemLike(0x6B175474E89094C44Da98b954EedeAC495271d0F);
-    JoinLike public daiJoin = JoinLike(0x9759A6Ac90977b93B58547b4A71c78317f391A28);
+    PotLike  public pot;
+    GemLike  public dai;
+    JoinLike public daiJoin;
 
     uint256 public supply;
 
@@ -74,10 +75,14 @@ contract DsrManager {
         z = add(mul(x, RAY), sub(y, 1)) / y;
     }
 
-    constructor() public {
+    constructor(address pot_, address daiJoin_) public {
+        pot = PotLike(pot_);
+        daiJoin = JoinLike(daiJoin_);
+        dai = GemLike(daiJoin.dai());
+
+        VatLike vat = VatLike(pot.vat());
         vat.hope(address(daiJoin));
         vat.hope(address(pot));
-
         dai.approve(address(daiJoin), uint256(-1));
     }
 
@@ -111,7 +116,7 @@ contract DsrManager {
 
         pot.exit(pie);
         uint256 amt = rmul(chi, pie);
-        daiJoin.exit(msg.sender, amt);
+        daiJoin.exit(dst, amt);
         emit Exit(dst, amt);
     }
 
@@ -124,7 +129,7 @@ contract DsrManager {
 
         pot.exit(pie);
         uint256 amt = rmul(chi, pie);
-        daiJoin.exit(msg.sender, amt);
+        daiJoin.exit(dst, amt);
         emit Exit(dst, amt);
     }
 }
