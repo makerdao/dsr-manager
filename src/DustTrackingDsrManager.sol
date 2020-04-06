@@ -1,4 +1,4 @@
-// DsrManager.sol
+// DustTrackingDsrManager.sol
 // Copyright (C) 2020 Maker Ecosystem Growth Holdings, INC.
 
 // This program is free software: you can redistribute it and/or modify
