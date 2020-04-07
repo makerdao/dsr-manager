@@ -103,7 +103,7 @@ contract DustTrackingDsrManager {
         // based on equality: (pie'*chi + dust') - (pie*chi + dust) = wad*RAY
         // where values with a "'" are post-update
         uint256 newPie = add(bal.pie, pie);
-        bal.dust = sub(add(add(mul(wad, RAY), mul(bal.pie, chi)), bal.dust), newPie);
+        bal.dust = sub(add(add(mul(wad, RAY), mul(bal.pie, chi)), bal.dust), mul(newPie, chi));
         bal.pie = newPie;
 
         emit Join(src, wad);
