@@ -162,7 +162,7 @@ contract DustTrackingDsrManager {
 
     // rad is internal dai, i.e. a 45 decimal digit fixed-point integer
     function exitDust(address dst, uint256 rad) public {
-        VatLike(pot.vat()).move(msg.sender, dst, rad);
+        VatLike(pot.vat()).move(address(this), dst, rad);
         bals[msg.sender].dust = sub(bals[msg.sender].dust, rad);
         // TODO: event?
     }
