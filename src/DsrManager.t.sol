@@ -1,4 +1,4 @@
-pragma solidity ^0.5.12;
+pragma solidity >=0.5.12;
 
 import "dss-deploy/DssDeploy.t.base.sol";
 
@@ -12,7 +12,7 @@ contract DsrManagerTest is DssDeployTestBase {
         deploy();
         manager = new DsrManager(address(pot), address(daiJoin));
 
-        weth.deposit.value(1 ether)();
+        weth.mint(1 ether);
         weth.approve(address(ethJoin), uint(-1));
         ethJoin.join(address(this), 1 ether);
         vat.frob("ETH", address(this), address(this), address(this), 1 ether, 50 ether);

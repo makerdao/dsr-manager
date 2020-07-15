@@ -14,13 +14,13 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-pragma solidity ^0.5.12;
+pragma solidity >=0.5.12;
 
-contract VatLike {
+interface VatLike {
     function hope(address) external;
 }
 
-contract PotLike {
+interface PotLike {
     function vat() external view returns (address);
     function chi() external view returns (uint256);
     function rho() external view returns (uint256);
@@ -29,13 +29,13 @@ contract PotLike {
     function exit(uint256) external;
 }
 
-contract JoinLike {
+interface JoinLike {
     function dai() external view returns (address);
     function join(address, uint256) external;
     function exit(address, uint256) external;
 }
 
-contract GemLike {
+interface GemLike {
     function transferFrom(address,address,uint256) external returns (bool);
     function approve(address,uint256) external returns (bool);
 }
