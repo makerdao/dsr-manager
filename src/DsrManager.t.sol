@@ -46,12 +46,12 @@ contract DsrManagerTest is DssDeployTestBase {
         hevm.warp(initialTime);
         manager.join(address(this), 50 ether);
         assertEq(dai.balanceOf(address(this)), 0 ether);
-        assertEq(pot.pie(address(manager)) * pot.chi(), 50 ether * ONE);
-        assertEq(manager.pieOf(address(this)) * pot.chi(), 50 ether * ONE);
+        assertEq(pot.pie(address(manager)) * pot.chi(), 50 ether * RAY);
+        assertEq(manager.pieOf(address(this)) * pot.chi(), 50 ether * RAY);
         hevm.warp(initialTime + 1); // Moved 1 second
         pot.drip();
-        assertEq(pot.pie(address(manager)) * pot.chi(), 52.5 ether * ONE); // Now the equivalent DAI amount is 2.5 DAI extra
-        assertEq(manager.pieOf(address(this)) * pot.chi(), 52.5 ether * ONE);
+        assertEq(pot.pie(address(manager)) * pot.chi(), 52.5 ether * RAY); // Now the equivalent DAI amount is 2.5 DAI extra
+        assertEq(manager.pieOf(address(this)) * pot.chi(), 52.5 ether * RAY);
         manager.exit(address(this), 52.5 ether);
         assertEq(dai.balanceOf(address(this)), 52.5 ether);
         assertEq(pot.pie(address(manager)), 0);
@@ -64,8 +64,8 @@ contract DsrManagerTest is DssDeployTestBase {
         hevm.warp(initialTime);
         manager.join(address(0x1), 50 ether);
         assertEq(dai.balanceOf(address(this)), 0 ether);
-        assertEq(pot.pie(address(manager)) * pot.chi(), 50 ether * ONE);
-        assertEq(manager.pieOf(address(0x1)) * pot.chi(), 50 ether * ONE);
+        assertEq(pot.pie(address(manager)) * pot.chi(), 50 ether * RAY);
+        assertEq(manager.pieOf(address(0x1)) * pot.chi(), 50 ether * RAY);
     }
 
     function testExitOtherUser() public {
@@ -107,7 +107,7 @@ contract DsrManagerTest is DssDeployTestBase {
         manager.join(address(this), 50 ether);
         assertEq(pot.pie(address(manager)) * pot.chi(), 49999999999999999999993075745400000000000000000);
         assertEq(manager.pieOf(address(this)) * pot.chi(), 49999999999999999999993075745400000000000000000);
-        assertEq(vat.dai(address(manager)), 50 ether * ONE - 49999999999999999999993075745400000000000000000);
+        assertEq(vat.dai(address(manager)), 50 ether * RAY - 49999999999999999999993075745400000000000000000);
         manager.exit(address(this), 49.999999999999999999 ether);
         assertEq(dai.balanceOf(address(this)), 49.999999999999999999 ether);
     }
